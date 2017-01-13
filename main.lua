@@ -9,12 +9,14 @@ vec2 = require "pancake.vec2"
 
 Object = require "lib.classic"
 
-local max_cells = 40
-local cell_size = 10
+local max_cells = 20
+local cell_size = 20
 local current_cell = nil
 local cell_stack = {}
 local cell_tbl = {}
 local chosen_cell
+
+local offset = 10
 
 Cell = Object:extend()
 
@@ -26,6 +28,10 @@ function Cell:new(pos, coords)
 end
 
 function Cell:draw()
+  if self.visited then
+    love.graphics.setColor(120,20,120)
+    love.graphics.rectangle("fill", self.coords.x*cell_size, self.coords.y*cell_size, cell_size, cell_size)
+  end
   love.graphics.setColor(255,255,255)
   for i,v in pairs(self.walls) do
     local c = self.coords
@@ -131,6 +137,7 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.translate(offset, offset)
   for i,v in pairs(cell_tbl) do
     for j,k in pairs(v) do
       k:draw()
